@@ -45,7 +45,7 @@
     }
 
     app.get('/live', (req, res) => {
-      const topic = 'bitcoin';
+      const topic = 'alibaba';
       fetchNews(topic, 1)
         .then(response => {
           res.json(response.articles);
