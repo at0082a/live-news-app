@@ -51,6 +51,7 @@ app.post("/api/search", (req, res) => {
   let topic = req.body.firstParam
   fetchNews(topic, 1)
     .then(response => {
+      console.log(response.articles)
       res.json(response.articles);
       // updateFeed(topic);
     })
