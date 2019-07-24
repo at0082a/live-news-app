@@ -49,6 +49,12 @@ app.get("/live", (req, res) => {
 
 app.post("/api/search", (req, res) => {
   let topic = req.body.firstParam
+  fetchNews(topic, 1)
+    .then(response => {
+      res.json(response.articles);
+      // updateFeed(topic);
+    })
+    .catch(error => console.log(error));
   console.log("hellloooo", topic)
 })
 
