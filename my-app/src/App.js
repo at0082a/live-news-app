@@ -2,25 +2,20 @@ import React, { Component } from "react";
 import Pusher from "pusher-js";
 import pushid from "pushid";
 import "./App.css";
+import  Navigation  from './components/navbar/navbar';
+
 class App extends Component {
   constructor(props) {
     super(props);
     this.state = { newsItems: [], value: "", searchedItems: [] };
     this.handleChange = this.handleChange.bind(this);
-    this.keyPress = this.keyPress.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
   }
   handleChange(event) {
     this.setState({ value: event.target.value });
   }
 
-  keyPress(e){
-    if(e.keyCode === 13 ){
-      return true;
-    }
- }
-
-
+  //this function triggers when user wants to search for curated news topic
   handleSubmit(event) {
     var topic = this.state.value;
     event.preventDefault();
@@ -65,25 +60,24 @@ class App extends Component {
   render() {
     const NewsItem = (article, id) => (
       <li key={id}>
-        <a href={`${article.url}`}>{article.title}</a>
+        <a target="_blank" href={`${article.url}`}>{article.title}</a>
         <p> {article.description} </p>
       </li>
     );
 
     const searchedItem = (article, id) => (
       <li key={id}>
-        <a href={`${article.url}`}>{article.title}</a>
+        <a target="_blank" href={`${article.url}`} >{article.title}</a>
         <p> {article.description} </p>
       </li>
     );
     const newsItems = this.state.newsItems.map(e => NewsItem(e, pushid()));
     const searchedItems = this.state.searchedItems.map(e => searchedItem(e, pushid()));
-    
-    
-    if (this.state.searchedItems.length === 0) {
+
     return (
       <div className="App">
-        <h1 className="App-title">News Feed</h1>
+        < Navigation sticky="top"/>
+        <h1 className="App-title">My News Feed</h1>
         <form className="news-search" onSubmit={this.handleSubmit}>
           <input
             className="submit-button"
@@ -94,28 +88,17 @@ class App extends Component {
           />
           <input className="submit-button" type="submit" value="Submit" />
         </form>
-        <ul className="news-items">{newsItems}</ul>
-      </div>
-    );
-  } else {
-    return (
-      <div className="App">
-        <h1 className="App-title">News Feed</h1>
-        <form className="news-search" onSubmit={this.handleSubmit}>
-          <input
-            className="submit-button"
-            type="text"
-            onKeyDown={this.keyPress}
-            onChange={this.handleChange}
-            value={this.state.value}
-          />
-          <input className="submit-button" type="submit" value="Submit" />
-        </form>
-        <ul className="news-items">{searchedItems}</ul>
+        <div className="articles">
+          { this.state.searchedItems.length === 0 
+          ?
+          <ul className="news-items">{newsItems}</ul> 
+          :
+          <ul className="news-items">{searchedItems}</ul>
+          }
+        </div>
       </div>
     );
   }
-}
 }
 export default App;
 
